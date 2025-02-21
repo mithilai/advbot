@@ -1,0 +1,13 @@
+langchain-community
+python-dotenv
+groq
+streamlit
+requests
+beautifulsoup4
+langchain
+langchain-groq
+langchain-huggingface
+sentence-transformers
+selenium
+bs4
+requests
