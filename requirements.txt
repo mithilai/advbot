@@ -10,4 +10,4 @@ langchain-huggingface
 sentence-transformers
 selenium
 bs4
-pinecone
+requests
