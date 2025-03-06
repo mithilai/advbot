@@ -2,7 +2,8 @@ import os
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from vectorstore import query_pinecone
-from pinecone import ScoredVector
+# from pinecone import ScoredVector
+from pinecone import Pinecone
 
 # Load environment variables
 load_dotenv()
@@ -36,16 +37,30 @@ Question:
 Answer:
 """
 
+# def retrieve_answer(query):
+#     retrieved_docs = query_pinecone(query)
+
+#     # Extract text from Pinecone results
+#     context = "\n\n".join(doc.metadata.get("text", "") if isinstance(doc, ScoredVector) else str(doc) for doc in retrieved_docs)
+
+#     # If no relevant content found, return fallback response
+#     if not context.strip():
+#         return "I am unable to answer it right now!"
+
+#     # Generate response using LLM
+#     response = llm.invoke(PROMPT_TEMPLATE.format(context=context, question=query))
+#     return response.content
+
 def retrieve_answer(query):
     retrieved_docs = query_pinecone(query)
 
-    # Extract text from Pinecone results
-    context = "\n\n".join(doc.metadata.get("text", "") if isinstance(doc, ScoredVector) else str(doc) for doc in retrieved_docs)
+    # Debug retrieved documents
+    print("🔍 Retrieved Docs:", retrieved_docs)
 
-    # If no relevant content found, return fallback response
+    context = "\n\n".join(str(doc) for doc in retrieved_docs)
+
     if not context.strip():
         return "I am unable to answer it right now!"
 
-    # Generate response using LLM
     response = llm.invoke(PROMPT_TEMPLATE.format(context=context, question=query))
     return response.content

@@ -58,11 +58,31 @@ def add_to_pinecone(docs):
     print("✅ Data successfully stored in Pinecone.")
     return index
 
+# def query_pinecone(query, top_k=3):
+#     """Retrieve top-k relevant documents from Pinecone."""
+#     index = pc.Index(PINECONE_INDEX)
+#     embedding = embeddings.embed_query(query)
+
+#     results = index.query(
+#         vector=embedding,
+#         top_k=top_k,
+#         include_metadata=True
+#     )
+
+#     # Debugging: Check Pinecone query results
+#     print("🔍 Pinecone Results:", results)
+
+#     if "matches" not in results or not results["matches"]:
+#         return []
+
+#     return [Document(page_content=match["metadata"].get("content", "")) for match in results["matches"]]
+
 def query_pinecone(query, top_k=3):
     """Retrieve top-k relevant documents from Pinecone."""
     index = pc.Index(PINECONE_INDEX)
     embedding = embeddings.embed_query(query)
 
+    # Ensure Pinecone query is correctly formatted
     results = index.query(
         vector=embedding,
         top_k=top_k,
@@ -72,7 +92,8 @@ def query_pinecone(query, top_k=3):
     # Debugging: Check Pinecone query results
     print("🔍 Pinecone Results:", results)
 
-    if "matches" not in results or not results["matches"]:
+    if not results or "matches" not in results or not results["matches"]:
+        print("⚠️ No matches found in Pinecone!")
         return []
 
     return [Document(page_content=match["metadata"].get("content", "")) for match in results["matches"]]

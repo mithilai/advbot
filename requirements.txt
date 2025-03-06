@@ -11,4 +11,5 @@ sentence-transformers
 selenium
 bs4
 pinecone
-pinecone-client
+fastapi
+uvicorn
